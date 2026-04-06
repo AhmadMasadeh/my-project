@@ -4,16 +4,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A single-file Tic Tac Toe web game (`tictactoe.html`) with two modes: 2-player and vs Computer. No build tools, dependencies, or tests — just open the HTML file in a browser.
+A Django-based Tic Tac Toe web game with two modes: 2-player and vs Computer.
 
-## Running
+## Commands
 
-```
-open tictactoe.html
+```bash
+python3 manage.py runserver        # Run dev server at http://127.0.0.1:8000/
+python3 manage.py migrate          # Apply database migrations
+python3 manage.py test game        # Run tests for the game app
 ```
 
 ## Architecture
 
-Everything lives in `tictactoe.html`: markup, CSS, and JavaScript in a single file. The game logic uses a flat array of 9 cells and checks win conditions against `LINES` (the 8 possible three-in-a-row combinations). The AI opponent uses a priority-based heuristic (win > block > center > corners > edges), not minimax.
+- **myproject/** — Django project settings and root URL config
+- **game/** — Single app containing the Tic Tac Toe game
+  - `views.py` — Renders the game template
+  - `urls.py` — Routes `/` to the game view
+  - `templates/game/tictactoe.html` — Self-contained game with inline CSS and JS
 
-Note: There is an unused `WINS` array on line 38 that appears to be a buggy duplicate of `LINES` (contains `[0,2,4,6]` which is a 4-element array, not a valid win line). Only `LINES` is used for game logic.
+The game logic is entirely client-side JavaScript: a flat 9-cell array checked against `LINES` (8 possible win combinations). The AI uses priority-based heuristics (win > block > center > corners > edges).
+
+Note: There is an unused `WINS` array in the template JS that is a buggy duplicate of `LINES`. Only `LINES` is used.
